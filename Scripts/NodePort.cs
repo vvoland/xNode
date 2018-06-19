@@ -21,6 +21,7 @@ namespace XNode {
 
         public IO direction { get { return _direction; } }
         public Node.ConnectionType connectionType { get { return _connectionType; } }
+        public Node.TypeConstraint typeConstraint { get { return _typeConstraint; } }
 
         /// <summary> Is this port connected to anytihng? </summary>
         public bool IsConnected { get { return connections.Count != 0; } }
@@ -49,6 +50,7 @@ namespace XNode {
         [SerializeField] private List<PortConnection> connections = new List<PortConnection>();
         [SerializeField] private IO _direction;
         [SerializeField] private Node.ConnectionType _connectionType;
+        [SerializeField] private Node.TypeConstraint _typeConstraint;
         [SerializeField] private bool _dynamic;
 
         /// <summary> Construct a static targetless nodeport. Used as a template. </summary>
@@ -61,9 +63,11 @@ namespace XNode {
                 if (attribs[i] is Node.InputAttribute) {
                     _direction = IO.Input;
                     _connectionType = (attribs[i] as Node.InputAttribute).connectionType;
+                    _typeConstraint = (attribs[i] as Node.InputAttribute).typeConstraint;
                 } else if (attribs[i] is Node.OutputAttribute) {
                     _direction = IO.Output;
                     _connectionType = (attribs[i] as Node.OutputAttribute).connectionType;
+                    _typeConstraint = (attribs[i] as Node.OutputAttribute).typeConstraint;
                 }
             }
         }
@@ -75,17 +79,19 @@ namespace XNode {
             _direction = nodePort.direction;
             _dynamic = nodePort._dynamic;
             _connectionType = nodePort._connectionType;
+            _typeConstraint = nodePort._typeConstraint;
             _node = node;
         }
 
         /// <summary> Construct a dynamic port. Dynamic ports are not forgotten on reimport, and is ideal for runtime-created ports. </summary>
-        public NodePort(string fieldName, Type type, IO direction, Node.ConnectionType connectionType, Node node) {
+        public NodePort(string fieldName, Type type, IO direction, Node.ConnectionType connectionType, Node.TypeConstraint typeConstraint, Node node) {
             _fieldName = fieldName;
             this.ValueType = type;
             _direction = direction;
             _node = node;
             _dynamic = true;
             _connectionType = connectionType;
+            _typeConstraint = typeConstraint;
         }
 
         /// <summary> Checks all connections for invalid references, and removes them. </summary>

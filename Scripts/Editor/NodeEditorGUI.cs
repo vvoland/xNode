@@ -408,7 +408,14 @@ namespace XNodeEditor {
                         //Check if port rect is available
                         if (!portConnectionPoints.ContainsKey(input)) continue;
                         Rect r = GridToWindowRectNoClipped(portConnectionPoints[input]);
-                        if (r.Contains(mousePos)) hoveredPort = input;
+                        if (r.Contains(mousePos)) {
+                            // If input port has a type constraint that doesn't match dragged port, ignore.
+                            if (IsDraggingPort) {
+                                if (input.typeConstraint == XNode.Node.TypeConstraint.Inherited && !input.ValueType.IsAssignableFrom(draggedOutput.ValueType)) continue;
+                                else if (input.typeConstraint == XNode.Node.TypeConstraint.Strict && input.ValueType != draggedOutput.ValueType) continue;
+                            }
+                            hoveredPort = input;
+                        }
                     }
                     //Check all output ports
                     foreach (XNode.NodePort output in node.Outputs) {
