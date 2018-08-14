@@ -12,6 +12,8 @@ namespace XNodeEditor {
         public Rect position;
         /// <summary> Are we currently renaming a node? </summary>
         protected bool isRenaming;
+        /// <summary> Cached list of XNode.Node derived types</summary>
+        private Type[] cachedDerivedTypes;
 
         public virtual void OnGUI() { }
 
@@ -56,6 +58,13 @@ namespace XNodeEditor {
             UnityEngine.Object.DestroyImmediate(node, true);
             target.RemoveNode(node);
             if (NodeEditorPreferences.GetSettings().autoSave) AssetDatabase.SaveAssets();
+        }
+
+        /// <summary> Get node types available for this graph </summary>
+        public virtual Type[] GetNodeTypes() {
+            if(cachedDerivedTypes == null)
+                cachedDerivedTypes = ReflectionHelper.GetDerivedTypes(typeof(XNode.Node));
+            return cachedDerivedTypes;
         }
 
         [AttributeUsage(AttributeTargets.Class)]

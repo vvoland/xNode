@@ -134,8 +134,9 @@ namespace XNodeEditor {
         void ShowGraphContextMenu() {
             GenericMenu contextMenu = new GenericMenu();
             Vector2 pos = WindowToGridPosition(Event.current.mousePosition);
-            for (int i = 0; i < nodeTypes.Length; i++) {
-                Type type = nodeTypes[i];
+            Type[] graphNodeTypes = graphEditor.GetNodeTypes();
+            for (int i = 0; i < graphNodeTypes.Length; i++) {
+                Type type = graphNodeTypes[i];
 
                 //Get node context menu path
                 string path = graphEditor.GetNodeMenuName(type);
