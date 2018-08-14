@@ -36,7 +36,7 @@ namespace XNodeEditor {
 
         public static Type[] GetNodeTypes() {
             //Get all classes deriving from Node via reflection
-            return GetDerivedTypes(typeof(XNode.Node));
+            return ReflectionHelper.GetDerivedTypes(typeof(XNode.Node));
         }
 
         public static Dictionary<Type, Color> GetNodeTint() {
@@ -59,16 +59,6 @@ namespace XNodeEditor {
                 widths.Add(nodeTypes[i], attrib.width);
             }
             return widths;
-        }
-
-        /// <summary> Get all classes deriving from baseType via reflection </summary>
-        public static Type[] GetDerivedTypes(Type baseType) {
-            List<System.Type> types = new List<System.Type>();
-            System.Reflection.Assembly[] assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
-            foreach (Assembly assembly in assemblies) {
-                types.AddRange(assembly.GetTypes().Where(t => !t.IsAbstract && baseType.IsAssignableFrom(t)).ToArray());
-            }
-            return types.ToArray();
         }
 
         public static object ObjectFromType(Type type) {
