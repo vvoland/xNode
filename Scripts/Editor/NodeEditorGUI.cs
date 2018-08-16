@@ -146,6 +146,8 @@ namespace XNodeEditor {
                     CreateNode(type, pos);
                 });
             }
+
+            graphEditor.OnContextMenu(contextMenu, this, pos);
             contextMenu.AddSeparator("");
             contextMenu.AddItem(new GUIContent("Preferences"), false, () => OpenPreferences());
             AddCustomContextMenuItems(contextMenu, graph);

@@ -67,6 +67,11 @@ namespace XNodeEditor {
             return cachedDerivedTypes;
         }
 
+        /// <summary> Handle right-click context menu custom options </summary>
+        public virtual void OnContextMenu(GenericMenu contextMenu, NodeEditorWindow nodeEditorWindow, Vector2 clickPos)
+        {
+        }
+
         [AttributeUsage(AttributeTargets.Class)]
         public class CustomNodeGraphEditorAttribute : Attribute,
             XNodeEditor.Internal.NodeEditorBase<NodeGraphEditor, NodeGraphEditor.CustomNodeGraphEditorAttribute, XNode.NodeGraph>.INodeEditorAttrib {
