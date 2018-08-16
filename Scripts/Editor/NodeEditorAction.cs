@@ -315,13 +315,14 @@ namespace XNodeEditor {
             panOffset = Vector2.zero;
         }
 
-        public void CreateNode(Type type, Vector2 position) {
+        public XNode.Node CreateNode(Type type, Vector2 position) {
             XNode.Node node = graph.AddNode(type);
             node.position = position;
             node.name = UnityEditor.ObjectNames.NicifyVariableName(type.Name);
             AssetDatabase.AddObjectToAsset(node, graph);
             if (NodeEditorPreferences.GetSettings().autoSave) AssetDatabase.SaveAssets();
             Repaint();
+            return node;
         }
 
         /// <summary> Remove nodes in the graph in Selection.objects</summary>
