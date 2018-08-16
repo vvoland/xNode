@@ -54,6 +54,7 @@ namespace XNodeEditor {
                         InstancePortList(property.name, type, property.serializedObject, port.direction, connectionType);
                         return;
                     }
+
                     switch (showBacking) {
                         case XNode.Node.ShowBackingValue.Unconnected:
                             // Display a label if port is connected
@@ -63,7 +64,8 @@ namespace XNodeEditor {
                             break;
                         case XNode.Node.ShowBackingValue.Never:
                             // Display a label
-                            EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.displayName));
+                            GUIStyle inputStyle = NodeEditorResources.styles.inputPort;
+                            EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.displayName), inputStyle);
                             break;
                         case XNode.Node.ShowBackingValue.Always:
                             // Display an editable property field
@@ -148,7 +150,7 @@ namespace XNodeEditor {
             // If property is an input, display a regular property field and put a port handle on the left side
             if (port.direction == XNode.NodePort.IO.Input) {
                 // Display a label
-                EditorGUILayout.LabelField(content, options);
+                EditorGUILayout.LabelField(content, NodeEditorResources.styles.inputPort, options);
 
                 rect = GUILayoutUtility.GetLastRect();
                 rect.position = rect.position - new Vector2(16, 0);
