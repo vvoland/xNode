@@ -13,6 +13,7 @@ namespace XNodeEditor {
 
         private static readonly Dictionary<UnityEngine.Object, Dictionary<string, ReorderableList>> reorderableListCache = new Dictionary<UnityEngine.Object, Dictionary<string, ReorderableList>>();
         private static int reorderableListIndex = -1;
+        private static GUIContent emptyLabel = new GUIContent("");
 
         /// <summary> Make a field for a serialized property. Automatically displays relevant node port. </summary>
         public static void PropertyField(SerializedProperty property, bool includeChildren = true, params GUILayoutOption[] options) {
@@ -71,16 +72,21 @@ namespace XNodeEditor {
                         InstancePortList(property.name, type, property.serializedObject, port.direction, connectionType);
                         return;
                     }
+
+                    GUIStyle inputStyle = NodeEditorResources.styles.inputPort;
                     switch (showBacking) {
                         case XNode.Node.ShowBackingValue.Unconnected:
-                            // Display a label if port is connected
-                            if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.displayName));
+                            EditorGUILayout.BeginHorizontal();
+                            // Display a label
+                            EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.displayName), inputStyle, GUILayout.MaxWidth(75.0f));
                             // Display an editable property field if port is not connected
-                            else EditorGUILayout.PropertyField(property, label, includeChildren, GUILayout.MinWidth(30));
+                            if(!port.IsConnected)
+                                EditorGUILayout.PropertyField(property, emptyLabel, includeChildren, GUILayout.MinWidth(30));
+                            EditorGUILayout.EndHorizontal();
                             break;
                         case XNode.Node.ShowBackingValue.Never:
                             // Display a label
-                            EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.displayName));
+                            EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.displayName), inputStyle);
                             break;
                         case XNode.Node.ShowBackingValue.Always:
                             // Display an editable property field
@@ -173,7 +179,7 @@ namespace XNodeEditor {
             // If property is an input, display a regular property field and put a port handle on the left side
             if (port.direction == XNode.NodePort.IO.Input) {
                 // Display a label
-                EditorGUILayout.LabelField(content, options);
+                EditorGUILayout.LabelField(content, NodeEditorResources.styles.inputPort, options);
 
                 Rect rect = GUILayoutUtility.GetLastRect();
                 position = rect.position - new Vector2(16, 0);
