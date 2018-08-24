@@ -36,7 +36,7 @@ namespace XNodeEditor {
 
         public static Type[] GetNodeTypes() {
             //Get all classes deriving from Node via reflection
-            return ReflectionHelper.GetDerivedTypes(typeof(XNode.Node));
+            return NodeEditorUtilities.GetDerivedTypes(typeof(XNode.Node));
         }
 
         public static Dictionary<Type, Color> GetNodeTint() {

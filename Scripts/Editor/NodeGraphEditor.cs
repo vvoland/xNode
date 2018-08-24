@@ -63,7 +63,7 @@ namespace XNodeEditor {
         /// <summary> Get node types available for this graph </summary>
         public virtual Type[] GetNodeTypes() {
             if(cachedDerivedTypes == null)
-                cachedDerivedTypes = ReflectionHelper.GetDerivedTypes(typeof(XNode.Node));
+                cachedDerivedTypes = NodeEditorUtilities.GetDerivedTypes(typeof(XNode.Node));
             return cachedDerivedTypes;
         }
 
