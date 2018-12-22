@@ -14,13 +14,22 @@ namespace XNodeEditor {
 
         /// <summary>C#'s Script Icon [The one MonoBhevaiour Scripts have].</summary>
         private static Texture2D scriptIcon = (EditorGUIUtility.IconContent("cs Script Icon").image as Texture2D);
-        
+
         /// <summary> Get all classes deriving from baseType via reflection </summary>
         public static Type[] GetDerivedTypes(Type baseType) {
             List<Type> types = new List<Type>();
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (Assembly assembly in assemblies) {
-                types.AddRange(assembly.GetTypes().Where(t => !t.IsAbstract && baseType.IsAssignableFrom(t)).ToArray());
+                try
+                {
+                    types.AddRange(assembly.GetTypes()
+                        .Where(t => !t.IsAbstract && baseType.IsAssignableFrom(t))
+                        .ToArray());
+                }
+                catch (ReflectionTypeLoadException)
+                {
+                    Debug.LogFormat("Could not load types from assembly {0}", assembly.FullName);
+                }
             }
             return types.ToArray();
         }
@@ -54,7 +63,7 @@ namespace XNodeEditor {
             }
             return false;
         }
-        
+
         /// <summary> Returns true if this can be casted to <see cref="Type"/></summary>
         public static bool IsCastableTo(this Type from, Type to) {
             if (to.IsAssignableFrom(from)) return true;
