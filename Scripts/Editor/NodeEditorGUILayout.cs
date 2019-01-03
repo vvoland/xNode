@@ -32,7 +32,14 @@ namespace XNodeEditor {
             if (property == null) throw new NullReferenceException();
 
             // If property is not a port, display a regular property field
-            if (port == null) EditorGUILayout.PropertyField(property, label, includeChildren, GUILayout.MinWidth(30));
+            if (port == null)
+            {
+                string name = label != null ? label.text : property.displayName;
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(new GUIContent(name), NodeEditorResources.styles.nodeProperty);
+                EditorGUILayout.PropertyField(property, new GUIContent(""), includeChildren, GUILayout.MinWidth(30));
+                EditorGUILayout.EndHorizontal();
+            }
             else {
                 Rect rect = new Rect();
 
