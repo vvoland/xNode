@@ -44,8 +44,9 @@ namespace XNodeEditor {
         /// <summary> Add items for the context menu when right-clicking this node. Override to add custom menu items. </summary>
         public virtual void AddContextMenuItems(GenericMenu menu) {
             Vector2 pos = NodeEditorWindow.current.WindowToGridPosition(Event.current.mousePosition);
-            for (int i = 0; i < NodeEditorWindow.nodeTypes.Length; i++) {
-                Type type = NodeEditorWindow.nodeTypes[i];
+            Type[] nodeTypes = GetNodeTypes();
+            for (int i = 0; i < nodeTypes.Length; i++) {
+                Type type = nodeTypes[i];
 
                 //Get node context menu path
                 string path = GetNodeMenuName(type);
@@ -58,6 +59,11 @@ namespace XNodeEditor {
             menu.AddSeparator("");
             menu.AddItem(new GUIContent("Preferences"), false, () => NodeEditorWindow.OpenPreferences());
             NodeEditorWindow.AddCustomContextMenuItems(menu, target);
+        }
+
+        /// <summary> Return an array of node types that can be created in this graph editor. </summary>
+        public virtual Type[] GetNodeTypes() {
+            return NodeEditorWindow.nodeTypes;
         }
 
         public virtual Color GetPortColor(XNode.NodePort port) {
