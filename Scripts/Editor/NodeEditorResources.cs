@@ -16,13 +16,20 @@ namespace XNodeEditor {
         // Styles
         public static Styles styles { get { return _styles != null ? _styles : _styles = new Styles(); } }
         public static Styles _styles = null;
-        public static GUIStyle OutputPort { get { return new GUIStyle(EditorStyles.label) { alignment = TextAnchor.UpperRight }; } }
+        public static GUIStyle OutputPort { 
+            get { 
+                GUIStyle style = new GUIStyle(EditorStyles.label) { alignment = TextAnchor.UpperRight };
+                style.normal.textColor = Color.white;
+                return style;
+            }
+        }
         public class Styles {
             public GUIStyle inputPort, nodeHeader, nodeBody, tooltip, nodeHighlight, nodeProperty;
 
             public Styles() {
                 GUIStyle baseStyle = new GUIStyle("Label");
                 baseStyle.fixedHeight = 18;
+                baseStyle.normal.textColor = Color.white;
 
                 inputPort = new GUIStyle(baseStyle);
                 inputPort.alignment = TextAnchor.UpperLeft;
